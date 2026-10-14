@@ -1,204 +1,182 @@
 import React from 'react';
-import { motion } from 'motion/react';
-import {
-  Clock,
-  MapPin,
-  Award,
-  GraduationCap,
-  ArrowDownRight,
-  ShieldCheck,
-  CheckCircle2,
-  Sparkles,
-} from 'lucide-react';
-import {
-  DOCTOR_DATA,
-  WHATSAPP_MESSAGES,
-  getWhatsAppUrl,
-} from '../data/content';
-import { WhatsAppIcon } from './BrandIcons';
+import { Language } from '../types';
+import { CLINIC_INFO, CONTENT, buildWhatsAppLink } from '../data/translations';
+import { ASSETS } from '../assets';
+import { MessageCircle, ArrowRight, ShieldCheck, MapPin, Globe, CheckCircle2, Sparkles, Star } from 'lucide-react';
 
-export const Hero: React.FC = () => {
+interface HeroProps {
+  lang: Language;
+  onExploreServices: () => void;
+}
+
+export const Hero: React.FC<HeroProps> = ({ lang, onExploreServices }) => {
+  const t = CONTENT[lang].hero;
+
+  const whatsappHeroUrl = buildWhatsAppLink(
+    lang === 'pt'
+      ? 'Olá Dra. Tatiane, vi o seu site e gostaria de agendar uma consulta.'
+      : 'Hello Dr. Tatiane, I saw your website and would like to schedule a consultation.'
+  );
 
   return (
-    <section
-      id="inicio"
-      className="relative min-h-screen flex items-center pt-28 pb-20 lg:py-28 overflow-hidden bg-[#FAF8F5]"
-    >
-      {/* Fundo Claro Profissional e Elegante (Sem fotos artificiais / Sem IA) */}
-      <div className="absolute inset-0 pointer-events-none select-none overflow-hidden">
-        {/* Gradiente radial suave de luminosidade médica */}
-        <div className="absolute -top-32 -left-32 w-[520px] h-[520px] rounded-full bg-gradient-to-br from-[#F4EFE6] to-transparent opacity-70 blur-3xl" />
-        <div className="absolute top-1/3 -right-32 w-[600px] h-[600px] rounded-full bg-gradient-to-bl from-[#E8DFD1]/40 to-transparent opacity-60 blur-3xl" />
-        <div className="absolute -bottom-32 left-1/3 w-[450px] h-[450px] rounded-full bg-gradient-to-t from-white to-transparent opacity-80 blur-2xl" />
+    <section className="relative overflow-hidden bg-[#0A0C0E] text-[#FBF9F5] pt-8 pb-16 lg:pt-14 lg:pb-24 border-b border-[#C9A227]/30">
+      {/* Dynamic ambient glowing aura in background */}
+      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[500px] bg-[#C9A227]/12 rounded-full blur-[140px] pointer-events-none animate-glow" />
+      <div className="absolute -top-20 -left-20 w-96 h-96 bg-[#8C631A]/20 rounded-full blur-[120px] pointer-events-none" />
+      <div className="absolute bottom-0 right-0 w-[500px] h-[400px] bg-[#25D366]/10 rounded-full blur-[150px] pointer-events-none" />
 
-        {/* Linhas decorativas sutis de precisão e autoridade */}
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#E8DFD1_1px,transparent_1px),linear-gradient(to_bottom,#E8DFD1_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_35%,#000_70%,transparent_100%)] opacity-25" />
-      </div>
+      {/* Subtle luxury ambient pattern */}
+      <div className="absolute inset-0 z-0 bg-[radial-gradient(#C9A227_1px,transparent_1px)] [background-size:32px_32px] opacity-10 pointer-events-none" />
 
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
-          {/* Coluna Esquerda: Proposta de Valor e Conversão */}
-          <div className="lg:col-span-7 space-y-6">
-            <motion.div
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              className="flex flex-wrap items-center gap-2 text-xs sm:text-sm font-semibold tracking-wide text-[#73000A]"
-            >
-              <span className="text-[#8B0000] font-bold">{DOCTOR_DATA.motto}</span>
-              <span aria-hidden="true" className="text-[#C59B6D]">·</span>
-              <span className="text-[#4A3B3C] font-semibold">{DOCTOR_DATA.cro}</span>
-              <span aria-hidden="true" className="text-[#C59B6D]">·</span>
-              <span className="text-[#4A3B3C] font-semibold">27 anos de atuação clínica</span>
-            </motion.div>
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-10 items-center">
+          {/* Left Column: Copy & CTAs */}
+          <div className="lg:col-span-7 space-y-6 text-left">
+            {/* Badges row */}
+            <div className="flex flex-wrap items-center gap-2.5 text-xs">
+              <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-[#161B20] text-[#DFC56E] border border-[#C9A227]/40 font-semibold shadow-sm">
+                <ShieldCheck className="w-3.5 h-3.5 text-[#C9A227]" />
+                <span>{t.highlightBadge}</span>
+              </span>
+              <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-emerald-950/80 text-emerald-300 border border-emerald-500/40 font-medium">
+                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                <span>{t.onlineBadge}</span>
+              </span>
+              <span className="inline-flex items-center gap-1 px-3 py-1.5 rounded-full bg-white/5 text-white/80 border border-white/10 text-[11px]">
+                <Star className="w-3 h-3 fill-[#C9A227] text-[#C9A227]" />
+                <span>+14 Anos de Experiência</span>
+              </span>
+            </div>
 
-            <motion.h1
-              initial={{ opacity: 0, y: 22 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.1 }}
-              className="font-display text-4xl sm:text-5xl lg:text-[56px] font-semibold leading-[1.08] tracking-tight text-[#1C1617]"
-            >
-              Recupere seu sorriso com segurança, estética e confiança
-            </motion.h1>
+            {/* Main Headline with gold gradient touch */}
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-serif font-bold text-[#FBF9F5] leading-[1.12] tracking-tight">
+              {lang === 'pt' ? (
+                <>
+                  Mais conexão com a sua história para uma{' '}
+                  <span className="text-gold-gradient">vida mais plena.</span>
+                </>
+              ) : (
+                <>
+                  More connection with your story for a{' '}
+                  <span className="text-gold-gradient">fuller life.</span>
+                </>
+              )}
+            </h1>
 
-            <motion.p
-              initial={{ opacity: 0, y: 22 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="text-lg sm:text-xl text-[#3A2E2F] font-normal leading-relaxed max-w-2xl"
-            >
-              Implantes dentários, reabilitação oral e clareamento de alta performance com o{' '}
-              <strong className="font-semibold text-[#590009]">
-                {DOCTOR_DATA.fullName}
-              </strong>{' '}
-              – Mestre em Laser na Odontologia (USP/IPEN) e Especialista em Implantodontia.
-            </motion.p>
+            {/* Subheadline */}
+            <p className="text-base sm:text-lg md:text-xl text-white/85 max-w-2xl font-light leading-relaxed">
+              {t.subheadline}
+            </p>
 
-            <motion.p
-              initial={{ opacity: 0, y: 22 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.28 }}
-              className="text-sm sm:text-base text-[#524344] leading-relaxed max-w-xl"
-            >
-              Com trajetória na Odontologia desde o final da década de 1990, une prática clínica de
-              27 anos em São Bernardo do Campo, docência e assistência técnica pericial para
-              oferecer tratamentos de máxima previsibilidade.
-            </motion.p>
+            {/* Slogan highlight banner */}
+            <div className="border-l-3 border-[#C9A227] bg-white/5 rounded-r-2xl px-4 py-2.5 text-sm sm:text-base italic text-[#E3D9C8] flex items-center justify-between">
+              <span>&ldquo;{lang === 'pt' ? CLINIC_INFO.sloganPt : CLINIC_INFO.sloganEn}&rdquo;</span>
+              <Sparkles className="w-4 h-4 text-[#C9A227] shrink-0 ml-3" />
+            </div>
 
-            {/* Botões de Ação */}
-            <motion.div
-              initial={{ opacity: 0, y: 22 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.35 }}
-              className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 pt-2"
-            >
+            {/* Main Action Buttons */}
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 pt-2">
               <a
-                href={getWhatsAppUrl(WHATSAPP_MESSAGES.hero)}
+                href={whatsappHeroUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group inline-flex items-center justify-center gap-3 px-7 py-4 rounded-xl text-base font-semibold text-white bg-[#8B0000] hover:bg-[#73000A] shadow-md hover:shadow-lg transition-all duration-200 hover:scale-[1.02] whitespace-nowrap"
+                className="animate-shimmer inline-flex items-center justify-center gap-3 px-8 py-4 rounded-full text-base font-bold bg-[#25D366] hover:bg-[#20ba5a] text-white shadow-xl shadow-[#25D366]/30 hover:shadow-[#25D366]/50 transition-all transform hover:-translate-y-1 active:translate-y-0"
               >
-                <WhatsAppIcon className="w-5 h-5 text-[#D4AF37] group-hover:scale-110 transition-transform" />
-                <span>Quero Agendar no WhatsApp</span>
+                <MessageCircle className="w-5 h-5 fill-white shrink-0" />
+                <span>{t.ctaPrimary}</span>
               </a>
 
-              <a
-                href="#atuacao"
-                className="inline-flex items-center justify-center gap-2 px-6 py-4 rounded-xl text-base font-medium text-[#2A2021] bg-white hover:bg-[#F4EFE6] border border-[#E8DFD1] shadow-xs transition-all duration-200 hover:scale-[1.01] whitespace-nowrap"
+              <button
+                type="button"
+                onClick={onExploreServices}
+                className="inline-flex items-center justify-center gap-2 px-6 py-4 rounded-full text-base font-semibold text-[#FBF9F5] border border-white/25 hover:border-[#C9A227] hover:text-[#DFC56E] bg-white/5 hover:bg-white/10 transition-all cursor-pointer"
               >
-                <span>Conhecer Mentoria & Perícia</span>
-                <ArrowDownRight className="w-4 h-4 text-[#8B0000]" />
-              </a>
-            </motion.div>
+                <span>{t.ctaSecondary}</span>
+                <ArrowRight className="w-4 h-4" />
+              </button>
+            </div>
 
-            {/* Destaques de Confiança */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.7, delay: 0.45 }}
-              className="pt-4 border-t border-[#E8DFD1] grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs sm:text-sm text-[#4A3B3C]"
-            >
-              <div className="flex items-center gap-2.5">
-                <Award className="w-4 h-4 text-[#8B0000] shrink-0" />
-                <span>27 anos de prática em SBC</span>
+            {/* Numeric Stats Row */}
+            <div className="pt-6 grid grid-cols-2 sm:grid-cols-4 gap-4 border-t border-white/10 text-left">
+              <div>
+                <p className="text-2xl sm:text-3xl font-serif font-bold text-gold-gradient">+14</p>
+                <p className="text-xs text-white/60 mt-0.5">
+                  {lang === 'pt' ? 'Anos de clínica' : 'Years of practice'}
+                </p>
               </div>
-              <div className="flex items-center gap-2.5">
-                <GraduationCap className="w-4 h-4 text-[#8B0000] shrink-0" />
-                <span>Mestrado USP / IPEN</span>
+              <div>
+                <p className="text-2xl sm:text-3xl font-serif font-bold text-gold-gradient">+1.500</p>
+                <p className="text-xs text-white/60 mt-0.5">
+                  {lang === 'pt' ? 'Vidas acolhidas' : 'Patients welcomed'}
+                </p>
               </div>
-              <div className="flex items-center gap-2.5">
-                <Clock className="w-4 h-4 text-[#8B0000] shrink-0" />
-                <span>Atendimento agendado até 22h</span>
+              <div>
+                <p className="text-2xl sm:text-3xl font-serif font-bold text-gold-gradient">
+                  {lang === 'pt' ? 'Exterior' : 'Global'}
+                </p>
+                <p className="text-xs text-white/60 mt-0.5">
+                  {lang === 'pt' ? 'Brasil & Exterior' : 'Brazil & Abroad'}
+                </p>
               </div>
-            </motion.div>
+              <div>
+                <p className="text-2xl sm:text-3xl font-serif font-bold text-emerald-400">100%</p>
+                <p className="text-xs text-white/60 mt-0.5">
+                  {lang === 'pt' ? 'Sigiloso & Seguro' : 'Confidential'}
+                </p>
+              </div>
+            </div>
           </div>
 
-          {/* Coluna Direita: Foto Real do Dr. Carlos E. C. Vilela */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.97 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.7, delay: 0.25 }}
-            className="lg:col-span-5 relative max-w-md mx-auto lg:max-w-none w-full"
-          >
-            {/* Moldura da Foto Real Oficial */}
-            <div className="relative rounded-2xl overflow-hidden border border-[#E8DFD1] shadow-xl bg-white">
-              <img
-                src={DOCTOR_DATA.images.hero}
-                onError={(e) => {
-                  e.currentTarget.src = DOCTOR_DATA.localBackups.hero;
-                }}
-                alt="Dr. Carlos Eduardo Carvalho Vilela — Especialista em Implantodontia com modelo anatômico"
-                referrerPolicy="no-referrer"
-                className="w-full h-[480px] sm:h-[530px] object-cover object-top"
-              />
+          {/* Right Column: High-End Card with Framed Portrait & Floating Badges */}
+          <div className="lg:col-span-5 flex justify-center items-center">
+            <div className="relative w-full max-w-lg">
+              {/* Luxury gold glow halo */}
+              <div className="absolute -inset-3 bg-gradient-to-tr from-[#C9A227] via-[#8C631A] to-emerald-500/30 rounded-3xl blur-xl opacity-50 group-hover:opacity-80 transition duration-700" />
+              
+              <div className="relative rounded-3xl overflow-hidden bg-[#0A0C0E] border-2 border-[#C9A227]/50 shadow-2xl aspect-square flex items-center justify-center">
+                <img
+                  src={ASSETS.usa}
+                  alt="Dra. Tatiane Vilela - Psicóloga e Sexóloga"
+                  className="w-full h-full object-contain object-center filter contrast-[1.02] p-2"
+                  loading="eager"
+                />
 
-              <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-transparent to-transparent pointer-events-none" />
-
-              {/* Selo de Legenda com Nome e Assinatura */}
-              <div className="absolute bottom-4 left-4 right-4 p-4 rounded-xl bg-white/95 backdrop-blur-md border border-[#E8DFD1] shadow-xs">
-                <div className="flex items-center justify-between">
-                  <p className="font-display text-xl font-bold text-[#590009]">
-                    {DOCTOR_DATA.fullName}
-                  </p>
-                  <span className="text-[11px] font-bold text-[#8B0000] bg-[#FAF8F5] px-2 py-0.5 rounded border border-[#E8DFD1]">
-                    {DOCTOR_DATA.cro}
+                {/* Floating Top Pill Badge */}
+                <div className="absolute top-4 left-4 right-4 flex items-center justify-between text-xs">
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#0A0C0E]/90 backdrop-blur-md text-[#DFC56E] border border-[#C9A227]/40 font-semibold shadow-lg">
+                    <Sparkles className="w-3.5 h-3.5 text-[#C9A227]" />
+                    <span>Psicóloga & Sexóloga</span>
+                  </span>
+                  <span className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-full bg-emerald-950/90 backdrop-blur-md text-emerald-300 border border-emerald-500/40 text-[11px] font-medium">
+                    <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
+                    <span>Online</span>
                   </span>
                 </div>
-                <p className="text-xs text-[#4A3B3C] mt-0.5 font-medium">
-                  {DOCTOR_DATA.signature}
-                </p>
-                <div className="mt-2 pt-2 border-t border-[#E8DFD1]/60 flex items-center justify-between text-[11px] text-[#524344]">
-                  <span className="flex items-center gap-1 font-semibold text-[#8B0000]">
-                    <CheckCircle2 className="w-3.5 h-3.5 text-[#8B0000]" />
-                    Especialista em Implantodontia · Mestre em Laser (USP)
-                  </span>
-                  <span className="text-[#8B0000] font-semibold">São Bernardo do Campo</span>
+
+                {/* Bottom luxury frosted card overlay */}
+                <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-[#0A0C0E] via-[#0A0C0E]/90 to-transparent p-6 pt-14 text-left">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h3 className="text-2xl font-serif font-bold text-white tracking-wide">
+                        {CLINIC_INFO.name}
+                      </h3>
+                      <p className="text-xs font-semibold text-[#DFC56E] tracking-wider uppercase mt-0.5">
+                        {lang === 'pt' ? CLINIC_INFO.titlePt : CLINIC_INFO.titleEn} · {CLINIC_INFO.crp}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="mt-3 pt-3 border-t border-white/10 flex items-center justify-between text-xs text-white/70">
+                    <span className="flex items-center gap-1.5">
+                      <MapPin className="w-3.5 h-3.5 text-[#C9A227] shrink-0" />
+                      <span>{CLINIC_INFO.city}</span>
+                    </span>
+                    <span className="text-[#DFC56E] font-medium">100% Online Brasil & Exterior</span>
+                  </div>
                 </div>
               </div>
             </div>
-
-            {/* Floating Highlight Card 1: Atendimento até 22h */}
-            <div className="animate-float-slow sm:absolute sm:-top-5 sm:-left-6 mt-3 sm:mt-0 p-3.5 rounded-xl bg-white border border-[#E8DFD1] shadow-lg flex items-center gap-3">
-              <div className="w-10 h-10 rounded-lg bg-[#FAF8F5] border border-[#E8DFD1] text-[#8B0000] flex items-center justify-center shrink-0">
-                <Clock className="w-5 h-5 text-[#8B0000]" />
-              </div>
-              <div>
-                <p className="text-xs font-bold text-[#590009]">Atendimento até 22h</p>
-                <p className="text-[11px] text-[#524344]">Horário Noturno Agendado</p>
-              </div>
-            </div>
-
-            {/* Floating Highlight Card 2: São Bernardo do Campo */}
-            <div className="sm:absolute sm:-bottom-5 sm:-right-4 mt-3 sm:mt-0 p-3.5 rounded-xl bg-white border border-[#E8DFD1] shadow-lg flex items-center gap-3">
-              <div className="w-10 h-10 rounded-lg bg-[#FAF8F5] border border-[#E8DFD1] text-[#8B0000] flex items-center justify-center shrink-0">
-                <MapPin className="w-5 h-5 text-[#8B0000]" />
-              </div>
-              <div>
-                <p className="text-xs font-bold text-[#590009]">São Bernardo do Campo</p>
-                <p className="text-[11px] text-[#524344]">Av. Caminho do Mar, 2030</p>
-              </div>
-            </div>
-          </motion.div>
+          </div>
         </div>
       </div>
     </section>

@@ -1,175 +1,202 @@
 import React from 'react';
-import { Mail, Phone, MapPin, Clock } from 'lucide-react';
-import { DOCTOR_DATA, WHATSAPP_MESSAGES, getWhatsAppUrl } from '../data/content';
-import { InstagramIcon, WhatsAppIcon } from './BrandIcons';
+import { Language, PageId } from '../types';
+import { CLINIC_INFO, CONTENT, buildWhatsAppLink } from '../data/translations';
+import { ASSETS } from '../assets';
+import { MessageCircle, Mail, Instagram, ShieldCheck, MapPin, Globe } from 'lucide-react';
 
-export const Footer: React.FC = () => {
+interface FooterProps {
+  lang: Language;
+  onLanguageChange: (lang: Language) => void;
+  onNavigate: (page: PageId) => void;
+}
+
+export const Footer: React.FC<FooterProps> = ({
+  lang,
+  onLanguageChange,
+  onNavigate,
+}) => {
+  const t = CONTENT[lang].footer;
+  const navT = CONTENT[lang].nav;
+
+  const footerWhatsappUrl = buildWhatsAppLink(
+    lang === 'pt'
+      ? 'Olá Dra. Tatiane, gostaria de agendar uma consulta.'
+      : 'Hello Dr. Tatiane, I would like to schedule a consultation.'
+  );
+
   return (
-    <footer className="bg-[#F4EFE6] text-[#2A2021] border-t border-[#E8DFD1] pt-16 pb-28 sm:pb-24">
+    <footer className="bg-[#0F1215] text-[#FBF9F5] border-t border-white/10 pt-16 pb-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 pb-12 border-b border-[#E8DFD1]">
-          {/* Col 1: Brand, Official Signature & Credentials */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 pb-12 border-b border-white/10 text-left">
+          {/* Brand Col with Official Golden Logo */}
           <div className="lg:col-span-5 space-y-4">
-            <div className="flex items-start gap-3.5">
-              <div className="w-12 h-12 rounded-xl bg-white border border-[#E8DFD1] shadow-2xs flex items-center justify-center p-1.5 overflow-hidden shrink-0">
-                <img
-                  src={DOCTOR_DATA.officialLogo}
-                  alt="Logo Oficial Dr. Carlos Vilela"
-                  className="w-full h-full object-contain"
-                />
-              </div>
+            <div className="flex items-center gap-3">
+              <img
+                src={ASSETS.logo}
+                alt="Logo Oficial Dra. Tatiane Vilela"
+                className="h-14 sm:h-16 w-auto object-contain filter drop-shadow-[0_4px_12px_rgba(201,162,39,0.3)]"
+              />
               <div>
-                <div className="flex items-center gap-2 mb-1">
-                  <span className="text-xs font-bold text-[#8B0000] bg-white px-2 py-0.5 rounded border border-[#E8DFD1]">
-                    {DOCTOR_DATA.cro}
-                  </span>
-                  <span className="text-xs font-semibold text-[#524344]">
-                    {DOCTOR_DATA.clinicName} (27 anos)
-                  </span>
+                <span className="text-2xl font-serif font-bold text-white tracking-wide block">
+                  {CLINIC_INFO.name}
+                </span>
+                <div className="flex items-center gap-2 text-xs text-[#DFC56E] tracking-wider uppercase font-medium mt-0.5">
+                  <span>{lang === 'pt' ? CLINIC_INFO.titlePt : CLINIC_INFO.titleEn}</span>
+                  <span className="text-white/40">·</span>
+                  <span className="text-white/60 font-mono text-[11px]">{CLINIC_INFO.crp}</span>
                 </div>
-                <h3 className="font-display text-2xl sm:text-3xl font-bold text-[#590009]">
-                  {DOCTOR_DATA.fullName}
-                </h3>
-                <p className="text-xs font-bold text-[#8B0000] mt-1">
-                  {DOCTOR_DATA.signature}
-                </p>
               </div>
             </div>
-            <p className="text-xs sm:text-sm text-[#4A3B3C] leading-relaxed max-w-md">
-              Cirurgião-dentista, especialista em Implantodontia, mestre em Laser na Odontologia
-              pela <strong>USP/IPEN</strong> e formação em Odontologia Legal e Forense pela{' '}
-              <strong>Faculdade São Leopoldo Mandic</strong>. Conectando 27 anos de prática clínica
-              à mentoria profissional e análise pericial especializada.
+
+            <p className="text-sm text-white/70 italic max-w-sm font-light">
+              &ldquo;{lang === 'pt' ? CLINIC_INFO.sloganPt : CLINIC_INFO.sloganEn}&rdquo;
             </p>
-            <div className="flex flex-wrap items-center gap-3 pt-1">
-              <a
-                href={DOCTOR_DATA.instagramUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Instagram oficial @dr.carlosecvilela"
-                className="inline-flex items-center gap-2 px-3.5 py-2 rounded-lg bg-white border border-[#E8DFD1] hover:bg-[#FAF8F5] text-xs font-semibold text-[#590009] shadow-2xs transition-colors"
-              >
-                <InstagramIcon className="w-4 h-4 text-[#8B0000]" />
-                <span>{DOCTOR_DATA.instagramHandle}</span>
-              </a>
 
-              <a
-                href={getWhatsAppUrl(WHATSAPP_MESSAGES.floating)}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="WhatsApp oficial do Dr. Carlos Vilela"
-                className="inline-flex items-center gap-2 px-3.5 py-2 rounded-lg bg-[#15803D] hover:bg-[#166534] text-xs font-bold text-white shadow-2xs transition-colors"
-              >
-                <WhatsAppIcon className="w-4 h-4" />
-                <span>WhatsApp: {DOCTOR_DATA.phoneMobile}</span>
-              </a>
+            <div className="pt-1 text-xs text-white/60 space-y-1">
+              <p className="flex items-center gap-1.5">
+                <MapPin className="w-3.5 h-3.5 text-[#C9A227] shrink-0" />
+                <span>{CLINIC_INFO.city}</span>
+              </p>
+              <p className="flex items-center gap-1.5">
+                <Globe className="w-3.5 h-3.5 text-[#C9A227] shrink-0" />
+                <span>{lang === 'pt' ? CLINIC_INFO.onlineNotePt : CLINIC_INFO.onlineNoteEn}</span>
+              </p>
+            </div>
 
-              <a
-                href={`mailto:${DOCTOR_DATA.email}`}
-                className="inline-flex items-center gap-2 px-3.5 py-2 rounded-lg bg-white border border-[#E8DFD1] hover:bg-[#FAF8F5] text-xs font-semibold text-[#1C1617] shadow-2xs transition-colors"
-              >
-                <Mail className="w-4 h-4 text-[#8B0000]" />
-                <span>{DOCTOR_DATA.email}</span>
-              </a>
+            {/* Language switcher in footer */}
+            <div className="pt-2 flex items-center gap-2">
+              <span className="text-xs text-white/50">{lang === 'pt' ? 'Idioma:' : 'Language:'}</span>
+              <div className="inline-flex items-center bg-white/10 rounded-full p-1 border border-white/10">
+                <button
+                  type="button"
+                  onClick={() => onLanguageChange('pt')}
+                  className={`flex items-center gap-1 px-2.5 py-1 rounded-full text-xs transition-all ${
+                    lang === 'pt'
+                      ? 'bg-[#C9A227] text-[#111417] font-bold'
+                      : 'text-white/70 hover:text-white'
+                  }`}
+                >
+                  <span>🇧🇷</span>
+                  <span>Português</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => onLanguageChange('en')}
+                  className={`flex items-center gap-1 px-2.5 py-1 rounded-full text-xs transition-all ${
+                    lang === 'en'
+                      ? 'bg-[#C9A227] text-[#111417] font-bold'
+                      : 'text-white/70 hover:text-white'
+                  }`}
+                >
+                  <span>🇺🇸</span>
+                  <span>English</span>
+                </button>
+              </div>
             </div>
           </div>
 
-          {/* Col 2: Quick Navigation */}
+          {/* Nav links */}
           <div className="lg:col-span-3 space-y-3">
-            <h4 className="text-xs font-bold text-[#8B0000] tracking-wide">
-              Navegação Rápida
+            <h4 className="text-xs uppercase tracking-widest font-semibold text-[#DFC56E]">
+              {t.navigationTitle}
             </h4>
-            <ul className="grid grid-cols-2 gap-2 text-xs sm:text-sm text-[#4A3B3C]">
+            <ul className="space-y-2 text-sm text-white/75">
               <li>
-                <a href="#inicio" className="hover:text-[#8B0000] transition-colors">
-                  Início
-                </a>
+                <button
+                  onClick={() => onNavigate('home')}
+                  className="hover:text-[#DFC56E] transition-colors cursor-pointer"
+                >
+                  {navT.home}
+                </button>
               </li>
               <li>
-                <a href="#sobre" className="hover:text-[#8B0000] transition-colors">
-                  Sobre o Dr.
-                </a>
+                <button
+                  onClick={() => onNavigate('sobre')}
+                  className="hover:text-[#DFC56E] transition-colors cursor-pointer"
+                >
+                  {navT.about}
+                </button>
               </li>
               <li>
-                <a href="#implantes" className="hover:text-[#8B0000] transition-colors">
-                  Implantes
-                </a>
+                <button
+                  onClick={() => onNavigate('servicos')}
+                  className="hover:text-[#DFC56E] transition-colors cursor-pointer"
+                >
+                  {navT.services}
+                </button>
               </li>
               <li>
-                <a href="#clareamento" className="hover:text-[#8B0000] transition-colors">
-                  Clareamento
-                </a>
+                <button
+                  onClick={() => onNavigate('eua')}
+                  className="hover:text-[#DFC56E] transition-colors cursor-pointer"
+                >
+                  {navT.usa}
+                </button>
               </li>
               <li>
-                <a href="#atuacao" className="hover:text-[#8B0000] transition-colors">
-                  Mentoria & Perícia
-                </a>
-              </li>
-              <li>
-                <a href="#faq" className="hover:text-[#8B0000] font-semibold text-[#8B0000] transition-colors">
-                  Dúvidas / FAQ
-                </a>
-              </li>
-              <li>
-                <a href="#beneficios" className="hover:text-[#8B0000] transition-colors">
-                  Diferenciais
-                </a>
-              </li>
-              <li>
-                <a href="#depoimentos" className="hover:text-[#8B0000] transition-colors">
-                  Depoimentos
-                </a>
-              </li>
-              <li>
-                <a href="#contato" className="hover:text-[#8B0000] transition-colors">
-                  Contato
-                </a>
+                <button
+                  onClick={() => onNavigate('contato')}
+                  className="hover:text-[#DFC56E] transition-colors cursor-pointer"
+                >
+                  {navT.contact}
+                </button>
               </li>
             </ul>
           </div>
 
-          {/* Col 3: Official Contacts */}
-          <div className="lg:col-span-4 space-y-3 text-xs sm:text-sm">
-            <h4 className="text-xs font-bold text-[#8B0000] tracking-wide">
-              Canais Oficiais de Contato
+          {/* Direct Channels */}
+          <div className="lg:col-span-4 space-y-3">
+            <h4 className="text-xs uppercase tracking-widest font-semibold text-[#DFC56E]">
+              {t.contactTitle}
             </h4>
-            <div className="space-y-2 text-[#3A2E2F]">
-              <p className="flex items-center gap-2">
-                <WhatsAppIcon className="w-4 h-4 text-[#15803D] shrink-0" />
-                <span>
-                  <strong>WhatsApp Principal / Mentoria:</strong> {DOCTOR_DATA.phoneMobile}
-                </span>
-              </p>
-              <p className="flex items-center gap-2 text-xs text-[#524344]">
-                <Phone className="w-4 h-4 text-[#8B0000] shrink-0" />
-                <span>Consultório ProDents: {DOCTOR_DATA.phoneClinicMobile} · {DOCTOR_DATA.phoneLandline}</span>
-              </p>
-              <p className="flex items-center gap-2">
-                <Mail className="w-4 h-4 text-[#8B0000] shrink-0" />
-                <a href={`mailto:${DOCTOR_DATA.email}`} className="text-[#8B0000] font-semibold hover:underline">
-                  {DOCTOR_DATA.email}
-                </a>
-              </p>
-              <p className="flex items-start gap-2 pt-1 text-xs text-[#524344]">
-                <MapPin className="w-4 h-4 text-[#8B0000] shrink-0 mt-0.5" />
-                <span>{DOCTOR_DATA.address}</span>
-              </p>
-              <p className="flex items-center gap-2 text-xs text-[#73000A] font-semibold">
-                <Clock className="w-4 h-4 text-[#8B0000] shrink-0" />
-                <span>{DOCTOR_DATA.hours}</span>
-              </p>
+
+            <div className="space-y-2.5 text-xs text-white/80">
+              <a
+                href={footerWhatsappUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 hover:text-[#25D366] transition-colors"
+              >
+                <MessageCircle className="w-4 h-4 text-[#25D366] shrink-0" />
+                <span className="font-semibold">{CLINIC_INFO.phoneDisplay}</span>
+              </a>
+
+              <a
+                href={`mailto:${CLINIC_INFO.email}`}
+                className="flex items-center gap-2 hover:text-[#DFC56E] transition-colors break-all"
+              >
+                <Mail className="w-4 h-4 text-[#DFC56E] shrink-0" />
+                <span>{CLINIC_INFO.email}</span>
+              </a>
+
+              <a
+                href={CLINIC_INFO.instagramUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 hover:text-pink-400 transition-colors"
+              >
+                <Instagram className="w-4 h-4 text-pink-400 shrink-0" />
+                <span>{CLINIC_INFO.instagram}</span>
+              </a>
+
+              <div className="pt-2 text-[11px] text-white/50 leading-relaxed">
+                <p>{t.confidentialityNotice}</p>
+              </div>
             </div>
           </div>
         </div>
 
-        {/* Bottom Copyright */}
-        <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-[#524344]">
-          <p>
-            © {new Date().getFullYear()} {DOCTOR_DATA.fullName} · {DOCTOR_DATA.cro}. Todos os direitos reservados.
-          </p>
-          <p className="italic">
-            {DOCTOR_DATA.signature}
-          </p>
+        {/* Emergency disclaimer & copyright */}
+        <div className="pt-8 text-xs text-white/50 space-y-3 text-center sm:text-left sm:flex sm:items-center sm:justify-between">
+          <p>{t.copyright}</p>
+          <div className="flex items-center justify-center gap-1.5 text-[#DFC56E]/80">
+            <ShieldCheck className="w-4 h-4" />
+            <span>{CLINIC_INFO.crp}</span>
+          </div>
+        </div>
+
+        <div className="mt-4 p-3 rounded-lg bg-white/5 text-[11px] text-white/40 text-center leading-normal">
+          {t.emergencyNote}
         </div>
       </div>
     </footer>

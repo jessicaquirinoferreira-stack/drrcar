@@ -1,0 +1,8 @@
+{
+  "name": "Dr. Carlos Eduardo Carvalho Vilela | CRO-SP 62085 | ProDents",
+  "description": "Dr. Carlos Eduardo Carvalho Vilela (CRO-SP 62085) - Cirurgião-dentista, especialista em Implantodontia, mestre em Laser (USP/IPEN) e Odontologia Legal (São Leopoldo Mandic). Responsável Técnico da ProDents Odontologia em SBC (27 anos). Mentoria para dentistas e assistência técnica pericial.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

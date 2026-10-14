@@ -24,9 +24,9 @@ export const DOCTOR_DATA = {
   quote: 'Cuidar do seu sorriso é investir na sua saúde e confiança todos os dias.',
   // 6 Fotos reais oficiais do Dr. Carlos E. C. Vilela (links enviados pelo usuário, sem fotos de IA):
   images: {
-    hero: 'https://i.postimg.cc/pdQwHpWf/5076.jpg', // Foto 1 (Hero): Dr. Carlos segurando modelo anatômico de implante
+    hero: 'https://i.postimg.cc/FKXM8j4V/5090.jpg', // Foto 3 (Hero): Dr. Carlos com acervo e livros científicos
     about: 'https://i.postimg.cc/CKp3XjgH/5088.jpg', // Foto 2 (Sobre): Dr. Carlos de jaleco branco no consultório
-    implants: 'https://i.postimg.cc/FKXM8j4V/5090.jpg', // Foto 3 (Implantes): Dr. Carlos com acervo e livros científicos
+    implants: 'https://i.postimg.cc/pdQwHpWf/5076.jpg', // Foto 1 (Implantes): Dr. Carlos com modelo anatômico
     specialized: 'https://i.postimg.cc/FKXM8j4d/5092.jpg', // Foto 4 (Mentoria & Perícia): Dr. Carlos de terno no consultório
     whyChoose: 'https://i.postimg.cc/bvf7WQhT/5094.jpg', // Foto 5 (Diferenciais): Dr. Carlos no planejamento do atendimento
     whitening: 'https://i.postimg.cc/YSB5Z1Hx/5096.jpg', // Foto 6 (Clareamento & Conforto): Dr. Carlos tomando café
@@ -34,9 +34,9 @@ export const DOCTOR_DATA = {
   },
   // Cópias locais idênticas das 6 fotos reais para garantir carregamento instantâneo:
   localBackups: {
-    hero: '/images/5076.jpg',
+    hero: '/images/5090.jpg',
     about: '/images/5088.jpg',
-    implants: '/images/5090.jpg',
+    implants: '/images/5076.jpg',
     specialized: '/images/5092.jpg',
     whyChoose: '/images/5094.jpg',
     whitening: '/images/5096.jpg',
@@ -100,7 +100,7 @@ export const WHATSAPP_MESSAGES = {
   hero: 'Olá Dr. Carlos, vim pelo site e quero recuperar meu sorriso com a segurança de seus 27 anos de experiência. Poderia verificar os horários disponíveis?',
   about: 'Olá Dr. Carlos, conheci sua trajetória clínica e acadêmica pelo site e gostaria de agendar uma consulta.',
   implants: 'Olá Dr. Carlos, vim pelo site e gostaria de saber se sou candidato(a) para implante dentário.',
-  whitening: 'Olá Dr. Carlos, quero agendar o clareamento com laserterapia sem dor e sem restrição a café e vinho.',
+  lentesEmax: 'Olá Dr. Carlos, gostaria de saber mais sobre Lentes de Emax para harmonização do sorriso.',
   mentorship: 'Olá Dr. Carlos, sou cirurgião-dentista e gostaria de informações sobre a sua Mentoria odontológica.',
   mentorshipSingle: 'Olá Dr. Carlos, gostaria de consultar a disponibilidade para uma Consulta Avulsa de Mentoria.',
   mentorshipPackage4: 'Olá Dr. Carlos, gostaria de saber mais sobre o Pacote Mensal de Mentoria com 4 consultas.',
@@ -503,12 +503,12 @@ export const ASSISTANT_TOPICS: AssistantTopic[] = [
     whatsappPrompt: 'Olá Dr. Carlos, gostaria de saber se sou candidato(a) para fazer implante dentário.',
   },
   {
-    id: 'como-funciona-clareamento',
-    shortLabel: 'Clareamento sem dor (USP)',
-    question: 'Como funciona o clareamento dental sem dor do Dr. Carlos?',
+    id: 'lentes-de-emax',
+    shortLabel: 'Lentes de Emax (Porcelana)',
+    question: 'O que são as Lentes de Emax e como elas transformam o sorriso?',
     answer:
-      'Com o domínio do mestrado em Laser na Odontologia pela USP/IPEN, o Dr. Carlos aplica uma técnica exclusiva que proporciona de 70% a 100% de redução de sensibilidade. É um clareamento sem dor e sem restrições alimentares: você pode continuar tomando café e vinho normalmente!',
-    whatsappPrompt: WHATSAPP_MESSAGES.whitening,
+      'As Lentes de Emax são facetas estéticas confeccionadas em cerâmica de dissilicato de lítio de alta resistência e translucidez. Elas corrigem formato, cor e alinhamento dental com mínimo desgaste e naturalidade incomparável.',
+    whatsappPrompt: WHATSAPP_MESSAGES.lentesEmax,
   },
   {
     id: 'horario-endereco-contato',

@@ -1,306 +1,335 @@
 import React, { useState } from 'react';
-import { Language } from '../types';
-import { CLINIC_INFO, CONTENT, buildWhatsAppLink } from '../data/translations';
-import { MessageCircle, Mail, MapPin, Instagram, Clock, Send, CheckCircle2 } from 'lucide-react';
+import { MapPin, Phone, Clock, CheckCircle2, Send, Building2, Mail, Sparkles } from 'lucide-react';
+import { DOCTOR_DATA, getWhatsAppUrl, WHATSAPP_MESSAGES } from '../data/content';
+import { WhatsAppIcon, InstagramIcon } from './BrandIcons';
 
-interface ContactSectionProps {
-  lang: Language;
-}
+export const ContactSection: React.FC = () => {
+  const [name, setName] = useState('');
+  const [phone, setPhone] = useState('');
+  const [interest, setInterest] = useState('Implantes Dentários');
+  const [period, setPeriod] = useState('Noite (18h às 22h)');
+  const [submitted, setSubmitted] = useState(false);
+  const [error, setError] = useState('');
 
-export const ContactSection: React.FC<ContactSectionProps> = ({ lang }) => {
-  const t = CONTENT[lang].contact;
-
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    service: '',
-    location: '',
-    message: '',
-  });
-
-  const [submittedStatus, setSubmittedStatus] = useState<string | null>(null);
-
-  const servicesOptions =
-    lang === 'pt'
-      ? ['Terapia Individual', 'Terapia de Casal', 'Terapia Familiar', 'Terapia Sexual', 'Terapia Online EUA']
-      : ['Individual Therapy', 'Couple Therapy', 'Family Therapy', 'Sexual Therapy', 'Online Therapy USA'];
-
-  const handleSubmitWhatsApp = (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-
-    if (!formData.name) {
-      alert(lang === 'pt' ? 'Por favor, informe seu nome.' : 'Please enter your name.');
+    if (!name.trim() || name.trim().length < 2) {
+      setError('Por favor, informe seu nome para o atendimento personalizado.');
       return;
     }
-
-    const compiledText =
-      lang === 'pt'
-        ? `Olá Dra. Tatiane!\n*Nome:* ${formData.name}\n*E-mail:* ${formData.email || 'Não informado'}\n*Telefone:* ${formData.phone || 'Não informado'}\n*Interesse:* ${formData.service || 'Geral'}\n*Localização:* ${formData.location || 'Não informada'}\n*Mensagem:* ${formData.message || 'Gostaria de informações sobre agendamento.'}`
-        : `Hello Dr. Tatiane!\n*Name:* ${formData.name}\n*Email:* ${formData.email || 'Not provided'}\n*Phone:* ${formData.phone || 'Not provided'}\n*Service:* ${formData.service || 'General'}\n*Location:* ${formData.location || 'Not provided'}\n*Message:* ${formData.message || 'I would like information about booking.'}`;
-
-    const url = buildWhatsAppLink(compiledText);
-    setSubmittedStatus('whatsapp');
-    window.open(url, '_blank', 'noopener,noreferrer');
-  };
-
-  const handleSendEmail = (e: React.MouseEvent) => {
-    e.preventDefault();
-    if (!formData.name) {
-      alert(lang === 'pt' ? 'Por favor, informe seu nome.' : 'Please enter your name.');
+    if (!phone.trim() || phone.replace(/\D/g, '').length < 8) {
+      setError('Por favor, informe um telefone ou WhatsApp válido com DDD.');
       return;
     }
-
-    const subject = encodeURIComponent(`Consulta - ${formData.name} (${formData.service || 'Atendimento'})`);
-    const body = encodeURIComponent(
-      `Nome: ${formData.name}\nE-mail: ${formData.email}\nTelefone: ${formData.phone}\nServiço: ${formData.service}\nLocalização: ${formData.location}\n\nMensagem:\n${formData.message}`
-    );
-
-    window.location.href = `mailto:${CLINIC_INFO.email}?subject=${subject}&body=${body}`;
-    setSubmittedStatus('email');
+    setError('');
+    setSubmitted(true);
   };
+
+  const customWhatsAppMessage = `Olá Dr. Carlos, meu nome é ${name || 'Interessado(a)'}. Vim pelo site e gostaria de agendar uma conversa para ${interest} (Preferência de horário: ${period}. Meu telefone: ${phone}).`;
 
   return (
-    <section id="contato" className="py-16 lg:py-24 bg-[#FBF9F5] text-[#161B20]">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header */}
-        <div className="text-center max-w-3xl mx-auto mb-14">
-          <span className="text-xs uppercase tracking-widest text-[#8C631A] font-semibold">
-            {t.tagline}
-          </span>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-serif font-bold text-[#111417] mt-2 leading-tight">
-            {t.title}
-          </h2>
-          <p className="text-base sm:text-lg text-[#525E6A] mt-3 font-light">
-            {t.subtitle}
+    <section
+      id="contato"
+      className="py-20 lg:py-28 bg-[#FAF8F5] border-t border-[#E8DFD1] text-[#1C1617] relative overflow-hidden"
+    >
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        {/* Closing Statement Header */}
+        <div className="max-w-3xl mx-auto text-center mb-16 space-y-4">
+          <p className="text-xs sm:text-sm font-bold text-[#8B0000] tracking-wide">
+            {DOCTOR_DATA.clinicName} · {DOCTOR_DATA.experienceYears} · {DOCTOR_DATA.cro}
           </p>
+          <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl font-semibold text-[#1C1617] leading-[1.12]">
+            “Seu novo sorriso e o aprimoramento da sua prática profissional começam aqui.”
+          </h2>
+          <p className="text-sm sm:text-base text-[#524344]">
+            Converse diretamente pelo WhatsApp ou envie uma mensagem por e-mail. Atendimento clínico
+            agendado até às 22h e consultoria/mentoria odontológica personalizada.
+          </p>
+
+          <p className="text-xs font-semibold text-[#8B0000]">
+            {DOCTOR_DATA.signature}
+          </p>
+
+          {/* Giant High-Conversion WhatsApp Button */}
+          <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-3">
+            <a
+              href={getWhatsAppUrl(
+                'Olá Dr. Carlos, vim pelo site e quero conversar agora pelo WhatsApp!'
+              )}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center gap-3.5 px-8 sm:px-10 py-5 rounded-2xl text-base sm:text-lg font-bold text-white bg-[#8B0000] hover:bg-[#73000A] shadow-xl hover:shadow-2xl transition-all duration-200 hover:scale-[1.03] whitespace-nowrap"
+            >
+              <WhatsAppIcon className="w-6 h-6 text-[#D4AF37]" />
+              <span>Falar no WhatsApp · {DOCTOR_DATA.phoneMobile}</span>
+            </a>
+
+            <a
+              href={`mailto:${DOCTOR_DATA.email}`}
+              className="inline-flex items-center justify-center gap-2.5 px-6 py-5 rounded-2xl text-sm sm:text-base font-semibold text-[#1C1617] bg-white hover:bg-[#FAF8F5] border border-[#E8DFD1] shadow-md transition-colors whitespace-nowrap"
+            >
+              <Mail className="w-5 h-5 text-[#8B0000]" />
+              <span>{DOCTOR_DATA.email}</span>
+            </a>
+          </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
-          {/* Left Form */}
-          <div className="lg:col-span-7 bg-white rounded-2xl p-6 sm:p-8 border border-[#EDE6DC] shadow-sm">
-            <h3 className="text-xl font-serif font-bold text-[#111417] mb-6">
-              {lang === 'pt' ? 'Formulário de Contato & Agendamento' : 'Contact & Booking Inquiry'}
-            </h3>
-
-            {submittedStatus && (
-              <div className="mb-6 p-4 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs sm:text-sm flex items-center gap-2">
-                <CheckCircle2 className="w-5 h-5 text-emerald-600 shrink-0" />
-                <span>
-                  {lang === 'pt'
-                    ? 'Mensagem preparada com sucesso! Entraremos em contato em breve.'
-                    : 'Message prepared successfully! We will get in touch shortly.'}
-                </span>
-              </div>
-            )}
-
-            <form onSubmit={handleSubmitWhatsApp} className="space-y-4 text-left">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-xs font-semibold text-[#111417] mb-1.5">
-                    {t.formName} *
-                  </label>
-                  <input
-                    type="text"
-                    required
-                    value={formData.name}
-                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    placeholder={lang === 'pt' ? 'Ex: Ana Maria Silva' : 'E.g., Sarah Jenkins'}
-                    className="w-full px-4 py-2.5 rounded-lg border border-[#EDE6DC] bg-[#FCFBF8] text-sm text-[#111417] focus:outline-none focus:ring-2 focus:ring-[#C9A227] focus:border-transparent transition"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-xs font-semibold text-[#111417] mb-1.5">
-                    {t.formEmail}
-                  </label>
-                  <input
-                    type="email"
-                    value={formData.email}
-                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    placeholder="seuemail@exemplo.com"
-                    className="w-full px-4 py-2.5 rounded-lg border border-[#EDE6DC] bg-[#FCFBF8] text-sm text-[#111417] focus:outline-none focus:ring-2 focus:ring-[#C9A227] focus:border-transparent transition"
-                  />
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-xs font-semibold text-[#111417] mb-1.5">
-                    {t.formPhone}
-                  </label>
-                  <input
-                    type="tel"
-                    value={formData.phone}
-                    onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                    placeholder="+55 11 99999-9999 / +1 (...)"
-                    className="w-full px-4 py-2.5 rounded-lg border border-[#EDE6DC] bg-[#FCFBF8] text-sm text-[#111417] focus:outline-none focus:ring-2 focus:ring-[#C9A227] focus:border-transparent transition"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-xs font-semibold text-[#111417] mb-1.5">
-                    {t.formService}
-                  </label>
-                  <select
-                    value={formData.service}
-                    onChange={(e) => setFormData({ ...formData, service: e.target.value })}
-                    className="w-full px-4 py-2.5 rounded-lg border border-[#EDE6DC] bg-[#FCFBF8] text-sm text-[#111417] focus:outline-none focus:ring-2 focus:ring-[#C9A227] focus:border-transparent transition"
-                  >
-                    <option value="">{t.formServicePlaceholder}</option>
-                    {servicesOptions.map((opt) => (
-                      <option key={opt} value={opt}>
-                        {opt}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              </div>
-
+        {/* 2-Column Split: Contact Channels & Map (6 cols) + Interactive Booking Form (6 cols) */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
+          {/* Col 1 (6 cols): Official Address, Phones, Email & Embedded Map */}
+          <div className="lg:col-span-6 flex flex-col justify-between space-y-5 bg-white border border-[#E8DFD1] rounded-2xl p-6 sm:p-8 shadow-xs">
+            <div className="space-y-4">
               <div>
-                <label className="block text-xs font-semibold text-[#111417] mb-1.5">
-                  {t.formLocation}
-                </label>
-                <select
-                  value={formData.location}
-                  onChange={(e) => setFormData({ ...formData, location: e.target.value })}
-                  className="w-full px-4 py-2.5 rounded-lg border border-[#EDE6DC] bg-[#FCFBF8] text-sm text-[#111417] focus:outline-none focus:ring-2 focus:ring-[#C9A227] focus:border-transparent transition"
-                >
-                  <option value="">{t.formServicePlaceholder}</option>
-                  {t.formLocationOptions.map((opt) => (
-                    <option key={opt} value={opt}>
-                      {opt}
-                    </option>
-                  ))}
-                </select>
+                <div className="flex items-center justify-between">
+                  <p className="text-xs font-bold text-[#8B0000]">{DOCTOR_DATA.clinicName}</p>
+                  <span className="text-[10px] font-bold text-[#524344] bg-[#FAF8F5] px-2 py-0.5 rounded border border-[#E8DFD1]">
+                    {DOCTOR_DATA.cro}
+                  </span>
+                </div>
+                <h3 className="font-display text-xl font-bold text-[#1C1617] mt-0.5">
+                  {DOCTOR_DATA.fullName}
+                </h3>
+                <p className="text-xs text-[#8B0000] font-medium mt-0.5">
+                  {DOCTOR_DATA.signature}
+                </p>
               </div>
 
-              <div>
-                <label className="block text-xs font-semibold text-[#111417] mb-1.5">
-                  {t.formMessage}
-                </label>
-                <textarea
-                  rows={3}
-                  value={formData.message}
-                  onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                  placeholder={
-                    lang === 'pt'
-                      ? 'Compartilhe brevemente o que busca ou sua preferência de dia/horário...'
-                      : 'Briefly share what you are looking for or preferred schedule...'
-                  }
-                  className="w-full px-4 py-2.5 rounded-lg border border-[#EDE6DC] bg-[#FCFBF8] text-sm text-[#111417] focus:outline-none focus:ring-2 focus:ring-[#C9A227] focus:border-transparent transition"
-                />
-              </div>
+              <div className="space-y-3.5 text-xs sm:text-sm">
+                <div className="flex items-start gap-3">
+                  <div className="w-8 h-8 rounded-lg bg-[#FAF8F5] border border-[#E8DFD1] flex items-center justify-center shrink-0">
+                    <Phone className="w-4 h-4 text-[#8B0000]" />
+                  </div>
+                  <div>
+                    <p className="font-bold text-[#1C1617]">Telefones e WhatsApp</p>
+                    <div className="flex flex-col gap-1 mt-0.5 text-[#3A2E2F] tabular-nums text-xs">
+                      <a
+                        href={getWhatsAppUrl('Olá Dr. Carlos, vim pelo site e gostaria de agendar uma conversa.')}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="hover:text-[#8B0000] font-bold underline underline-offset-2 flex items-center gap-1.5"
+                      >
+                        <span>{DOCTOR_DATA.phoneMobile}</span>
+                        <span className="text-[10px] font-normal text-[#8B0000] bg-[#FAF8F5] px-1.5 py-0.2 rounded border border-[#E8DFD1]">
+                          Principal / Mentoria
+                        </span>
+                      </a>
+                      <a
+                        href={getWhatsAppUrl('Olá, gostaria de agendar uma consulta no consultório.', true)}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="hover:text-[#8B0000] underline underline-offset-2 text-[#524344]"
+                      >
+                        {DOCTOR_DATA.phoneClinicMobile} (Consultório Odontológico)
+                      </a>
+                      <a
+                        href="tel:+551143685956"
+                        className="hover:text-[#8B0000] underline underline-offset-2 text-[#524344]"
+                      >
+                        {DOCTOR_DATA.phoneLandline} (Telefone Fixo)
+                      </a>
+                    </div>
+                  </div>
+                </div>
 
-              {/* Action buttons */}
-              <div className="pt-2 flex flex-col sm:flex-row items-center gap-3">
-                <button
-                  type="submit"
-                  className="w-full sm:flex-1 inline-flex items-center justify-center gap-2 py-3 px-6 rounded-xl text-sm font-semibold bg-[#25D366] hover:bg-[#20ba5a] text-white shadow-md transition-all cursor-pointer"
-                >
-                  <MessageCircle className="w-4 h-4 fill-white" />
-                  <span>{t.formSubmit}</span>
-                </button>
+                <div className="flex items-start gap-3">
+                  <div className="w-8 h-8 rounded-lg bg-[#FAF8F5] border border-[#E8DFD1] flex items-center justify-center shrink-0">
+                    <Mail className="w-4 h-4 text-[#8B0000]" />
+                  </div>
+                  <div>
+                    <p className="font-bold text-[#1C1617]">E-mail Oficial</p>
+                    <a
+                      href={`mailto:${DOCTOR_DATA.email}`}
+                      className="text-xs text-[#8B0000] font-semibold hover:underline block mt-0.5"
+                    >
+                      {DOCTOR_DATA.email}
+                    </a>
+                  </div>
+                </div>
 
-                <button
-                  type="button"
-                  onClick={handleSendEmail}
-                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 py-3 px-5 rounded-xl text-sm font-medium border border-[#EDE6DC] hover:border-[#C9A227] hover:bg-[#FBF8EB] text-[#111417] transition-all cursor-pointer"
-                >
-                  <Mail className="w-4 h-4 text-[#8C631A]" />
-                  <span>{t.formSubmitEmail}</span>
-                </button>
+                <div className="flex items-start gap-3">
+                  <div className="w-8 h-8 rounded-lg bg-[#FAF8F5] border border-[#E8DFD1] flex items-center justify-center shrink-0">
+                    <MapPin className="w-4 h-4 text-[#8B0000]" />
+                  </div>
+                  <div>
+                    <p className="font-bold text-[#1C1617]">Endereço do Consultório</p>
+                    <p className="text-[#524344] mt-0.5 leading-tight">{DOCTOR_DATA.address}</p>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-3">
+                  <div className="w-8 h-8 rounded-lg bg-[#FAF8F5] border border-[#E8DFD1] flex items-center justify-center shrink-0">
+                    <Clock className="w-4 h-4 text-[#8B0000]" />
+                  </div>
+                  <div>
+                    <p className="font-bold text-[#1C1617]">Horário Diferenciado</p>
+                    <p className="text-[#524344] mt-0.5">{DOCTOR_DATA.hours}</p>
+                  </div>
+                </div>
               </div>
-            </form>
+            </div>
+
+            {/* Embedded Google Map */}
+            <div className="rounded-xl overflow-hidden border border-[#E8DFD1] h-32 bg-[#F4EFE6] relative shadow-2xs">
+              <iframe
+                title="Localização do Consultório Odontológico - Avenida Caminho do Mar, 2030, São Bernardo do Campo"
+                src="https://www.google.com/maps?q=Avenida+Caminho+do+Mar,+2030,+Sao+Bernardo+do+Campo,+SP&output=embed"
+                className="w-full h-full border-0"
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+              />
+            </div>
           </div>
 
-          {/* Right Direct Details */}
-          <div className="lg:col-span-5 space-y-5 text-left">
-            <div className="bg-white rounded-2xl p-6 sm:p-7 border border-[#EDE6DC] shadow-sm space-y-6">
-              <h3 className="text-xl font-serif font-bold text-[#111417]">
-                {t.directContactTitle}
+          {/* Col 2 (6 cols): Quick Pre-Evaluation & Mentorship Request Form */}
+          <div className="lg:col-span-6 bg-white text-[#1C1617] rounded-2xl p-6 sm:p-8 border border-[#E8DFD1] shadow-xs flex flex-col justify-between">
+            <div>
+              <p className="text-xs font-bold text-[#8B0000]">Agendamento Personalizado</p>
+              <h3 className="font-display text-xl font-bold text-[#1C1617] mt-0.5">
+                Solicite sua Consulta ou Mentoria
               </h3>
+              <p className="text-xs text-[#524344] mt-1 mb-4">
+                Preencha abaixo para direcionar seu atendimento ao WhatsApp oficial.
+              </p>
 
-              {/* WhatsApp Item */}
+              {submitted ? (
+                <div className="p-4 rounded-xl bg-[#FAF8F5] border border-[#8B0000]/30 space-y-3 text-center my-2">
+                  <div className="w-10 h-10 rounded-full bg-[#15803D]/15 text-[#15803D] flex items-center justify-center mx-auto">
+                    <CheckCircle2 className="w-5 h-5" />
+                  </div>
+                  <h4 className="font-display text-lg font-bold text-[#1C1617]">
+                    Tudo pronto, {name}!
+                  </h4>
+                  <p className="text-xs text-[#524344]">
+                    Interesse em <strong>{interest}</strong> ({period}).
+                  </p>
+                  <a
+                    href={getWhatsAppUrl(customWhatsAppMessage)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl text-xs font-bold text-white bg-[#15803D] hover:bg-[#166534] shadow-md transition-all"
+                  >
+                    <WhatsAppIcon className="w-4 h-4" />
+                    <span>Abrir WhatsApp com {DOCTOR_DATA.phoneMobile}</span>
+                  </a>
+                  <button
+                    type="button"
+                    onClick={() => setSubmitted(false)}
+                    className="text-[11px] text-[#8B0000] hover:underline block mx-auto cursor-pointer"
+                  >
+                    Editar dados
+                  </button>
+                </div>
+              ) : (
+                <form onSubmit={handleSubmit} className="space-y-3.5 text-xs">
+                  {error && (
+                    <p className="p-2.5 rounded-lg bg-[#8B0000]/10 border border-[#8B0000]/30 text-[#8B0000] font-medium text-xs">
+                      {error}
+                    </p>
+                  )}
+
+                  <div>
+                    <label htmlFor="contact-name" className="block font-semibold text-[#1C1617] mb-1">
+                      Seu Nome Completo
+                    </label>
+                    <input
+                      id="contact-name"
+                      type="text"
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                      placeholder="Ex: Dra. Mariana Alencar"
+                      className="w-full px-3.5 py-2.5 rounded-xl bg-[#FAF8F5] border border-[#E8DFD1] focus:border-[#8B0000] focus:bg-white focus:outline-none transition-colors"
+                    />
+                  </div>
+
+                  <div>
+                    <label htmlFor="contact-phone" className="block font-semibold text-[#1C1617] mb-1">
+                      WhatsApp com DDD
+                    </label>
+                    <input
+                      id="contact-phone"
+                      type="tel"
+                      value={phone}
+                      onChange={(e) => setPhone(e.target.value)}
+                      placeholder="(11) 99999-9999"
+                      className="w-full px-3.5 py-2.5 rounded-xl bg-[#FAF8F5] border border-[#E8DFD1] focus:border-[#8B0000] focus:bg-white focus:outline-none transition-colors"
+                    />
+                  </div>
+
+                  <div>
+                    <label htmlFor="contact-interest" className="block font-semibold text-[#1C1617] mb-1">
+                      Área de Interesse
+                    </label>
+                    <select
+                      id="contact-interest"
+                      value={interest}
+                      onChange={(e) => setInterest(e.target.value)}
+                      className="w-full px-3.5 py-2.5 rounded-xl bg-[#FAF8F5] border border-[#E8DFD1] focus:border-[#8B0000] focus:bg-white focus:outline-none transition-colors cursor-pointer"
+                    >
+                      <option value="Mentoria Odontológica (Consulta Avulsa)">
+                        Mentoria Odontológica (Consulta Avulsa)
+                      </option>
+                      <option value="Mentoria Odontológica (Pacote Mensal 4 consultas)">
+                        Mentoria Odontológica (Pacote Mensal 4 consultas)
+                      </option>
+                      <option value="Mentoria Odontológica (Pacote Mensal 8 consultas)">
+                        Mentoria Odontológica (Pacote Mensal 8 consultas)
+                      </option>
+                      <option value="Assistência Técnica em Processo Judicial">
+                        Assistência Técnica em Processo Judicial
+                      </option>
+                      <option value="Implantes Dentários (Avaliação Clínica)">
+                        Implantes Dentários (Avaliação Clínica)
+                      </option>
+                      <option value="Clareamento Dental com Laserterapia">
+                        Clareamento Dental com Laserterapia
+                      </option>
+                      <option value="Reabilitação Oral e Cirurgias Avançadas">
+                        Reabilitação Oral e Cirurgias Avançadas
+                      </option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label htmlFor="contact-period" className="block font-semibold text-[#1C1617] mb-1">
+                      Preferência de Horário
+                    </label>
+                    <select
+                      id="contact-period"
+                      value={period}
+                      onChange={(e) => setPeriod(e.target.value)}
+                      className="w-full px-3.5 py-2.5 rounded-xl bg-[#FAF8F5] border border-[#E8DFD1] focus:border-[#8B0000] focus:bg-white focus:outline-none transition-colors cursor-pointer"
+                    >
+                      <option value="Noite (18h às 22h) - ProDents">
+                        Noite (18h às 22h) · Horário Noturno ProDents
+                      </option>
+                      <option value="Tarde (13h às 18h)">Tarde (13h às 18h)</option>
+                      <option value="Manhã (08h às 12h)">Manhã (08h às 12h)</option>
+                      <option value="Sábado (Sob consulta)">Sábado (Sob consulta)</option>
+                    </select>
+                  </div>
+
+                  <button
+                    type="submit"
+                    className="w-full mt-2 inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl font-bold text-white bg-[#8B0000] hover:bg-[#73000A] shadow-sm transition-all duration-200 cursor-pointer hover:scale-[1.01]"
+                  >
+                    <Send className="w-4 h-4" />
+                    <span>Avançar para o WhatsApp ({DOCTOR_DATA.phoneMobile})</span>
+                  </button>
+                </form>
+              )}
+            </div>
+
+            <div className="pt-4 border-t border-[#E8DFD1] mt-4 flex items-center justify-between text-[11px] text-[#524344]">
+              <span className="flex items-center gap-1.5">
+                <span className="w-2 h-2 rounded-full bg-[#15803D]" />
+                Atendimento rápido pelo WhatsApp
+              </span>
               <a
-                href={buildWhatsAppLink('Olá Dra. Tatiane, gostaria de agendar uma consulta.')}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-start gap-3 p-3 rounded-xl hover:bg-[#FBF8EB] transition-colors group"
+                href={`mailto:${DOCTOR_DATA.email}`}
+                className="text-[#8B0000] font-semibold hover:underline"
               >
-                <div className="w-10 h-10 rounded-lg bg-[#25D366]/15 flex items-center justify-center shrink-0">
-                  <MessageCircle className="w-5 h-5 text-[#25D366]" />
-                </div>
-                <div>
-                  <p className="text-xs text-[#525E6A] font-medium">{t.whatsappLabel}</p>
-                  <p className="text-sm font-bold text-[#111417] group-hover:text-[#25D366] transition-colors">
-                    {CLINIC_INFO.phoneDisplay}
-                  </p>
-                  <p className="text-[11px] text-[#25D366] font-medium mt-0.5">
-                    {lang === 'pt' ? 'Toque para conversar agora' : 'Tap to chat now'}
-                  </p>
-                </div>
+                {DOCTOR_DATA.email}
               </a>
-
-              {/* Email Item */}
-              <a
-                href={`mailto:${CLINIC_INFO.email}`}
-                className="flex items-start gap-3 p-3 rounded-xl hover:bg-[#FBF8EB] transition-colors group"
-              >
-                <div className="w-10 h-10 rounded-lg bg-[#C9A227]/15 flex items-center justify-center shrink-0">
-                  <Mail className="w-5 h-5 text-[#C9A227]" />
-                </div>
-                <div>
-                  <p className="text-xs text-[#525E6A] font-medium">{t.emailLabel}</p>
-                  <p className="text-sm font-bold text-[#111417] group-hover:text-[#8C631A] transition-colors break-all">
-                    {CLINIC_INFO.email}
-                  </p>
-                </div>
-              </a>
-
-              {/* Instagram Item */}
-              <a
-                href={CLINIC_INFO.instagramUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-start gap-3 p-3 rounded-xl hover:bg-[#FBF8EB] transition-colors group"
-              >
-                <div className="w-10 h-10 rounded-lg bg-pink-100 flex items-center justify-center shrink-0">
-                  <Instagram className="w-5 h-5 text-pink-600" />
-                </div>
-                <div>
-                  <p className="text-xs text-[#525E6A] font-medium">{t.instagramLabel}</p>
-                  <p className="text-sm font-bold text-[#111417] group-hover:text-pink-600 transition-colors">
-                    {CLINIC_INFO.instagram}
-                  </p>
-                </div>
-              </a>
-
-              {/* Address */}
-              <div className="flex items-start gap-3 p-3 rounded-xl">
-                <div className="w-10 h-10 rounded-lg bg-[#F4EFEA] flex items-center justify-center shrink-0">
-                  <MapPin className="w-5 h-5 text-[#734F1B]" />
-                </div>
-                <div>
-                  <p className="text-xs text-[#525E6A] font-medium">{t.addressLabel}</p>
-                  <p className="text-sm font-semibold text-[#111417]">
-                    {t.addressValue}
-                  </p>
-                </div>
-              </div>
-
-              {/* Hours */}
-              <div className="flex items-start gap-3 p-3 rounded-xl">
-                <div className="w-10 h-10 rounded-lg bg-[#F4EFEA] flex items-center justify-center shrink-0">
-                  <Clock className="w-5 h-5 text-[#734F1B]" />
-                </div>
-                <div>
-                  <p className="text-xs text-[#525E6A] font-medium">{t.hoursLabel}</p>
-                  <p className="text-xs text-[#525E6A] mt-0.5 leading-relaxed">
-                    {t.hoursValue}
-                  </p>
-                </div>
-              </div>
             </div>
           </div>
         </div>

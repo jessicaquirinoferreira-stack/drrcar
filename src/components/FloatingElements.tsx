@@ -79,7 +79,7 @@ export const FloatingElements: React.FC = () => {
       };
     }
 
-    if (q.includes('clareamento') || q.includes('clarear') || q.includes('café') || q.includes('cafe') || q.includes('vinho') || q.includes('dor') || q.includes('sensibilidade')) {
+    if (q.includes('lente') || q.includes('emax') || q.includes('facetas') || q.includes('porcelana')) {
       return {
         answer: ASSISTANT_TOPICS[5].answer,
         prompt: ASSISTANT_TOPICS[5].whatsappPrompt,

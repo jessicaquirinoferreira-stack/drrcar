@@ -51,7 +51,7 @@ export const SpecializedFrontsSection: React.FC = () => {
               onError={(e) => {
                 e.currentTarget.src = DOCTOR_DATA.localBackups.specialized;
               }}
-              alt="Dr. Carlos Eduardo Carvalho Vilela em terno no consultório ProDents com troféu de reconhecimento"
+              alt="Dr. Carlos Eduardo Carvalho Vilela em terno no consultório com troféu de reconhecimento"
               referrerPolicy="no-referrer"
               className="w-full h-full object-cover object-top"
             />

@@ -7,7 +7,7 @@ const NAV_LINKS = [
   { label: 'Início', href: '#inicio' },
   { label: 'Sobre o Dr.', href: '#sobre' },
   { label: 'Implantes', href: '#implantes' },
-  { label: 'Clareamento', href: '#clareamento' },
+  { label: 'Serviços', href: '#servicos' },
   { label: 'Mentoria & Perícia', href: '#atuacao' },
   { label: 'Dúvidas / FAQ', href: '#faq' },
   { label: 'Diferenciais', href: '#beneficios' },
@@ -47,21 +47,21 @@ export const Navbar: React.FC = () => {
         {/* Zone 1: Brand Logo & Title with CRO */}
         <a
           href="#inicio"
-          className="flex items-center gap-3 whitespace-nowrap shrink-0 group"
+          className="flex items-center gap-3.5 whitespace-nowrap shrink-0 group"
           title={`${DOCTOR_DATA.fullName} · ${DOCTOR_DATA.cro}`}
         >
-          <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-xl bg-white border border-[#E8DFD1] shadow-sm flex items-center justify-center p-0.5 overflow-hidden shrink-0 group-hover:border-[#8B0000] transition-colors">
+          <div className="w-18 h-18 sm:w-20 sm:h-20 rounded-xl bg-white border border-[#E8DFD1] shadow-sm flex items-center justify-center p-1 overflow-hidden shrink-0 group-hover:border-[#8B0000] transition-colors">
             <img
               src={DOCTOR_DATA.officialLogo}
               alt="Logo Dr. Carlos Vilela"
-              className="w-full h-full object-contain scale-110"
+              className="w-full h-full object-contain scale-125"
             />
           </div>
           <div className="flex flex-col">
-            <span className="font-display text-lg sm:text-xl font-bold tracking-tight text-[#590009] group-hover:text-[#8B0000] transition-colors leading-none">
+            <span className="font-display text-xl sm:text-2xl font-bold tracking-tight text-[#590009] group-hover:text-[#8B0000] transition-colors leading-none">
               Dr. Carlos Vilela
             </span>
-            <span className="text-[10px] font-semibold text-[#8B0000] tracking-wide mt-1">
+            <span className="text-[11px] font-semibold text-[#8B0000] tracking-wide mt-1">
               {DOCTOR_DATA.cro} · Implantodontia & Laser
             </span>
           </div>

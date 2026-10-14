@@ -1,287 +1,158 @@
-import React, { useState } from 'react';
-import { Language, ServiceItem } from '../types';
-import { CONTENT, buildWhatsAppLink } from '../data/translations';
-import { User, Heart, Users, Sparkles, MessageCircle, ArrowRight, Check, X, Star } from 'lucide-react';
+import React from 'react';
+import { motion } from 'motion/react';
+import { ShieldCheck, Sparkles, CheckCircle2, ArrowRight, Bone, Cpu, Smile, Layers } from 'lucide-react';
+import { DOCTOR_DATA, WHATSAPP_MESSAGES, getWhatsAppUrl } from '../data/content';
+import { WhatsAppIcon } from './BrandIcons';
 
-interface ServicesSectionProps {
-  lang: Language;
-}
+export const CLINICAL_SERVICES = [
+  {
+    id: 'implantes',
+    title: 'Especialista em Implantes Dentários',
+    badge: 'Especialidade Principal',
+    icon: <ShieldCheck className="w-6 h-6 text-[#8B0000]" />,
+    description:
+      'Substituição de raízes dentárias perdidas por pinos de titânio biocompatível de alta durabilidade. Garante firmeza idêntica à dos dentes naturais, devolvendo o prazer de mastigar, falar e sorrir com total confiança.',
+    details: [
+      'Integração óssea (osseointegração) comprovada cientificamente',
+      'Pós-operatório mais confortável com aplicação de Laserterapia (USP)',
+      'Planejamento milimétrico com tomografia e cirurgia guiada',
+    ],
+    whatsappPrompt: 'Olá Dr. Carlos, vim pelo site e gostaria de saber mais sobre Implantes Dentários.',
+  },
+  {
+    id: 'enxerto',
+    title: 'Enxerto Ósseo',
+    badge: 'Cirurgia Regenerativa',
+    icon: <Bone className="w-6 h-6 text-[#8B0000]" />,
+    description:
+      'Procedimento regenerativo avançado indicado para pacientes que apresentam perda de espessura ou altura óssea. Reconstrói o suporte estrutural necessário para receber os implantes com segurança e estabilidade.',
+    details: [
+      'Recuperação do volume ósseo maxilar e mandibular',
+      'Técnicas cirúrgicas seguras e modernas com biomateriais consagrados',
+      'Garantia de base sólida para reabilitações duradouras',
+    ],
+    whatsappPrompt: 'Olá Dr. Carlos, gostaria de saber mais sobre o procedimento de Enxerto Ósseo.',
+  },
+  {
+    id: 'lentes-emax',
+    title: 'Lentes de Emax',
+    badge: 'Estética em Porcelana',
+    icon: <Sparkles className="w-6 h-6 text-[#8B0000]" />,
+    description:
+      'Facetas e lentes de contato dental confeccionadas em cerâmica de dissilicato de lítio (Emax). Oferecem resistência superior e translucidez impecável para harmonizar cor, formato e alinhamento do sorriso.',
+    details: [
+      'Dissilicato de Emax: máxima resistência e longevidade estética',
+      'Mínimo desgaste dental, preservando a estrutura original',
+      'Naturalidade translúcida que imita perfeitamente o esmalte do dente',
+    ],
+    whatsappPrompt: 'Olá Dr. Carlos, gostaria de saber mais sobre Lentes de Emax para meu sorriso.',
+  },
+  {
+    id: 'reabilitacao',
+    title: 'Reabilitação Oral',
+    badge: 'Restauração Completa',
+    icon: <Layers className="w-6 h-6 text-[#8B0000]" />,
+    description:
+      'Tratamento integrado que recupera a saúde bucal global, corrigindo a oclusão (mordida), substituindo múltiplos dentes perdidos e devolvendo a harmonia estética e funcional de todo o sistema masticatório.',
+    details: [
+      'Planejamento personalizado envolvendo próteses fixas e implantes',
+      'Correção da mordida e alívio de dores articulares e musculares',
+      'Devolução integral da função mastigatória e da autoestima',
+    ],
+    whatsappPrompt: 'Olá Dr. Carlos, gostaria de agendar uma avaliação para Reabilitação Oral.',
+  },
+  {
+    id: 'protocolos',
+    title: 'Protocolos para Desdentados',
+    badge: 'Próteses Fixas Totais',
+    icon: <Smile className="w-6 h-6 text-[#8B0000]" />,
+    description:
+      'Solução definitiva para pacientes que utilizam dentaduras móveis instáveis. O protocolo fixo sobre implantes (como All-on-4) prende-se firmemente aos pinos de titânio, eliminando a necessidade de próteses removíveis.',
+    details: [
+      'Firmeza absoluta: não solta ao falar ou mastigar',
+      'Eliminação completa de feridas e desconfortos causados por próteses móveis',
+      'Sorriso fixo, estético e rejuvenescedor com alta durabilidade',
+    ],
+    whatsappPrompt: 'Olá Dr. Carlos, gostaria de saber mais sobre Protocolos para Desdentados.',
+  },
+];
 
-export const ServicesSection: React.FC<ServicesSectionProps> = ({ lang }) => {
-  const t = CONTENT[lang].services;
-  const [activeModalService, setActiveModalService] = useState<ServiceItem | null>(null);
-  const [activeFilter, setActiveFilter] = useState<string>('all');
-
-  const getServiceIcon = (name: string) => {
-    switch (name) {
-      case 'user':
-        return <User className="w-6 h-6 text-[#C9A227]" />;
-      case 'heart':
-        return <Heart className="w-6 h-6 text-[#C9A227]" />;
-      case 'users':
-        return <Users className="w-6 h-6 text-[#C9A227]" />;
-      case 'sparkles':
-      default:
-        return <Sparkles className="w-6 h-6 text-[#C9A227]" />;
-    }
-  };
-
-  const getBadgeTag = (id: string) => {
-    if (lang === 'pt') {
-      switch (id) {
-        case 'sexual':
-          return 'Especialidade Clínica';
-        case 'casal':
-          return 'Mais Procurado';
-        case 'individual':
-          return 'Transformador';
-        case 'familiar':
-          return 'Harmonia no Lar';
-        default:
-          return 'Cuidado Integral';
-      }
-    } else {
-      switch (id) {
-        case 'sexual':
-          return 'Clinical Specialty';
-        case 'casal':
-          return 'Most Requested';
-        case 'individual':
-          return 'Deep Growth';
-        case 'familiar':
-          return 'Family Harmony';
-        default:
-          return 'Holistic Care';
-      }
-    }
-  };
-
-  const filteredItems =
-    activeFilter === 'all'
-      ? t.items
-      : t.items.filter((item) => item.id === activeFilter);
-
+export const ServicesSection: React.FC = () => {
   return (
-    <section id="servicos" className="py-20 lg:py-28 bg-[#F4EFEA] text-[#161B20] border-t border-[#EDE6DC] relative overflow-hidden">
-      {/* Background ambient accents */}
-      <div className="absolute top-0 right-0 w-96 h-96 bg-[#C9A227]/5 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute bottom-0 left-0 w-96 h-96 bg-[#25D366]/5 rounded-full blur-3xl pointer-events-none" />
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-10">
-          <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-[#ECDDA3]/60 text-[#8C631A] text-xs font-semibold uppercase tracking-wider mb-3">
-            <Sparkles className="w-3.5 h-3.5 text-[#C9A227]" />
-            <span>{t.tagline}</span>
-          </div>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-serif font-bold text-[#111417] leading-tight">
-            {t.title}
-          </h2>
-          <p className="text-base sm:text-lg text-[#525E6A] mt-3 font-light leading-relaxed">
-            {t.subtitle}
+    <section id="servicos" className="py-20 lg:py-28 bg-[#FAF8F5] relative overflow-hidden">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Header */}
+        <div className="max-w-3xl mb-16">
+          <p className="text-xs sm:text-sm font-bold text-[#8B0000] tracking-wide">
+            Especialidades e Tratamentos Oferecidos · {DOCTOR_DATA.cro}
           </p>
-
-          {/* Interactive Filter Pills */}
-          <div className="mt-8 flex flex-wrap items-center justify-center gap-2">
-            <button
-              type="button"
-              onClick={() => setActiveFilter('all')}
-              className={`px-4 py-2 rounded-full text-xs font-semibold transition-all cursor-pointer ${
-                activeFilter === 'all'
-                  ? 'bg-[#111417] text-[#DFC56E] shadow-md scale-105'
-                  : 'bg-white text-[#525E6A] hover:bg-[#FBF8EB] border border-[#EDE6DC]'
-              }`}
-            >
-              {lang === 'pt' ? 'Todos os Serviços' : 'All Services'}
-            </button>
-            {t.items.map((srv) => (
-              <button
-                key={srv.id}
-                type="button"
-                onClick={() => setActiveFilter(srv.id)}
-                className={`px-4 py-2 rounded-full text-xs font-semibold transition-all cursor-pointer ${
-                  activeFilter === srv.id
-                    ? 'bg-[#111417] text-[#DFC56E] shadow-md scale-105'
-                    : 'bg-white text-[#525E6A] hover:bg-[#FBF8EB] border border-[#EDE6DC]'
-                }`}
-              >
-                {srv.title}
-              </button>
-            ))}
-          </div>
+          <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl font-semibold text-[#1C1617] mt-2 leading-[1.12]">
+            Serviços Especializados do Dr. Carlos Vilela
+          </h2>
+          <p className="text-base sm:text-lg text-[#524344] mt-4 leading-relaxed">
+            Conheça os tratamentos de alta precisão conduzidos com 27 anos de experiência clínica,
+            rigor científico e atendimento humanizado em São Bernardo do Campo.
+          </p>
         </div>
 
-        {/* 3 Columns Grid */}
+        {/* 5 Services Cards Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {filteredItems.map((service) => {
-            const cardWhatsAppUrl = buildWhatsAppLink(service.whatsappMessage);
-            const badgeText = getBadgeTag(service.id);
-
-            return (
-              <div
-                key={service.id}
-                className="bg-white rounded-3xl p-6 sm:p-7 border-2 border-[#EDE6DC] hover:border-[#C9A227] shadow-sm hover:shadow-2xl transition-all duration-300 flex flex-col justify-between group relative overflow-hidden"
-              >
-                {/* Decorative top corner sheen */}
-                <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-[#C9A227]/10 to-transparent pointer-events-none rounded-tr-3xl" />
-
-                <div>
-                  {/* Service Card Image if provided */}
-                  {service.imageUrl && (
-                    <div className="mb-5 rounded-2xl overflow-hidden border border-[#EDE6DC] shadow-sm bg-[#F8F5F0] flex items-center justify-center p-3">
-                      <img
-                        src={service.imageUrl}
-                        alt={service.title}
-                        className="w-full h-auto max-h-[280px] object-contain group-hover:scale-105 transition-transform duration-500"
-                        loading="lazy"
-                      />
-                    </div>
-                  )}
-
-                  {/* Top Bar with Icon & Badge */}
-                  <div className="flex items-center justify-between mb-4">
-                    <div className="w-12 h-12 rounded-2xl bg-[#FBF8EB] border border-[#ECDDA3] flex items-center justify-center group-hover:scale-110 group-hover:bg-[#C9A227] group-hover:text-white transition-all shadow-xs">
-                      {getServiceIcon(service.iconName)}
-                    </div>
-                    <span className="text-[10px] font-bold uppercase tracking-wider text-[#8C631A] bg-[#FBF8EB] px-2.5 py-1 rounded-full border border-[#ECDDA3]">
-                      {badgeText}
-                    </span>
+          {CLINICAL_SERVICES.map((srv, idx) => (
+            <motion.div
+              key={srv.id}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.15 }}
+              transition={{ duration: 0.5, delay: idx * 0.08 }}
+              className={`p-7 sm:p-8 rounded-2xl bg-white border border-[#E8DFD1] shadow-xs hover:shadow-md transition-all duration-200 flex flex-col justify-between ${
+                idx === 0 ? 'md:col-span-2 lg:col-span-1 border-2 border-[#8B0000]/30' : ''
+              }`}
+            >
+              <div className="space-y-4">
+                <div className="flex items-center justify-between gap-3">
+                  <div className="w-12 h-12 rounded-xl bg-[#FAF8F5] border border-[#E8DFD1] flex items-center justify-center shrink-0">
+                    {srv.icon}
                   </div>
+                  <span className="text-xs font-bold px-2.5 py-1 rounded-md bg-[#FAF8F5] text-[#8B0000] border border-[#E8DFD1]">
+                    {srv.badge}
+                  </span>
+                </div>
 
-                  {/* Title & Subtitle */}
-                  <h3 className="text-xl font-serif font-bold text-[#111417] group-hover:text-[#8C631A] transition-colors leading-snug">
-                    {service.title}
-                  </h3>
-                  <p className="text-xs font-medium text-[#8C631A] mt-1 italic">
-                    {service.subtitle}
-                  </p>
+                <h3 className="font-display text-2xl font-bold text-[#1C1617] leading-snug">
+                  {srv.title}
+                </h3>
 
-                  {/* Description */}
-                  <p className="text-sm text-[#475467] mt-3.5 leading-relaxed font-light">
-                    {service.shortDesc}
-                  </p>
+                <p className="text-sm text-[#4A3B3C] leading-relaxed">{srv.description}</p>
 
-                  {/* Key points preview */}
-                  <ul className="mt-4 space-y-1.5 text-xs text-[#525E6A] border-t border-[#F2ECE4] pt-3">
-                    {service.benefits.slice(0, 2).map((b, i) => (
-                      <li key={i} className="flex items-start gap-1.5">
-                        <Check className="w-3.5 h-3.5 text-[#C9A227] shrink-0 mt-0.5" />
-                        <span>{b}</span>
+                <div className="pt-3 border-t border-[#E8DFD1] space-y-2">
+                  <p className="text-xs font-bold text-[#590009]">Destaques do Procedimento:</p>
+                  <ul className="space-y-1.5 text-xs text-[#3A2E2F]">
+                    {srv.details.map((detail) => (
+                      <li key={detail} className="flex items-start gap-2">
+                        <CheckCircle2 className="w-3.5 h-3.5 text-[#8B0000] shrink-0 mt-0.5" />
+                        <span>{detail}</span>
                       </li>
                     ))}
                   </ul>
                 </div>
-
-                {/* Actions */}
-                <div className="pt-6 space-y-2.5">
-                  <button
-                    type="button"
-                    onClick={() => setActiveModalService(service)}
-                    className="w-full flex items-center justify-center gap-1.5 py-2.5 px-3 text-xs font-semibold text-[#111417] hover:text-[#8C631A] hover:bg-[#FBF8EB] rounded-xl transition-colors cursor-pointer border border-transparent hover:border-[#ECDDA3]"
-                  >
-                    <span>{t.cardCta}</span>
-                    <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
-                  </button>
-
-                  <a
-                    href={cardWhatsAppUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-full inline-flex items-center justify-center gap-2 py-3 px-4 rounded-xl text-xs font-bold bg-[#25D366] hover:bg-[#20ba5a] text-white shadow-md hover:shadow-lg transition-all"
-                  >
-                    <MessageCircle className="w-4 h-4 fill-white shrink-0" />
-                    <span>{t.whatsappBtn}</span>
-                  </a>
-                </div>
               </div>
-            );
-          })}
+
+              <div className="pt-6 mt-6 border-t border-[#E8DFD1]">
+                <a
+                  href={getWhatsAppUrl(srv.whatsappPrompt)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl text-xs sm:text-sm font-semibold text-white bg-[#8B0000] hover:bg-[#73000A] shadow-xs hover:shadow-md transition-all duration-200 hover:scale-[1.01]"
+                >
+                  <WhatsAppIcon className="w-4 h-4 text-[#D4AF37]" />
+                  <span>Agendar Avaliação</span>
+                  <ArrowRight className="w-4 h-4 ml-1" />
+                </a>
+              </div>
+            </motion.div>
+          ))}
         </div>
       </div>
-
-      {/* Service Detail Modal */}
-      {activeModalService && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-in fade-in duration-200">
-          <div className="bg-white rounded-3xl max-w-2xl w-full p-6 sm:p-8 shadow-2xl border border-[#EDE6DC] relative max-h-[90vh] overflow-y-auto">
-            <button
-              type="button"
-              onClick={() => setActiveModalService(null)}
-              className="absolute top-5 right-5 p-2 rounded-full text-gray-400 hover:text-gray-700 hover:bg-gray-100 transition-colors"
-              aria-label="Fechar"
-            >
-              <X className="w-5 h-5" />
-            </button>
-
-            <div className="flex items-center gap-3 mb-4">
-              <div className="w-12 h-12 rounded-xl bg-[#FBF8EB] border border-[#ECDDA3] flex items-center justify-center">
-                {getServiceIcon(activeModalService.iconName)}
-              </div>
-              <div>
-                <h3 className="text-2xl font-serif font-bold text-[#111417]">
-                  {activeModalService.title}
-                </h3>
-                <p className="text-xs font-medium text-[#8C631A] italic">
-                  {activeModalService.subtitle}
-                </p>
-              </div>
-            </div>
-
-            <div className="space-y-4 text-sm text-[#475467] leading-relaxed">
-              {activeModalService.fullDesc.map((p, idx) => (
-                <p key={idx}>{p}</p>
-              ))}
-            </div>
-
-            {/* Benefits */}
-            <div className="mt-6 pt-5 border-t border-[#F2ECE4]">
-              <h4 className="text-xs uppercase tracking-wider font-bold text-[#111417] mb-3">
-                {lang === 'pt' ? 'Principais Benefícios' : 'Key Benefits'}
-              </h4>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-[#303841]">
-                {activeModalService.benefits.map((b, i) => (
-                  <div key={i} className="flex items-start gap-2 bg-[#FBF8EB]/60 p-2.5 rounded-lg">
-                    <Check className="w-4 h-4 text-[#C9A227] shrink-0 mt-0.5" />
-                    <span>{b}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* For whom */}
-            <div className="mt-5">
-              <h4 className="text-xs uppercase tracking-wider font-bold text-[#111417] mb-2">
-                {lang === 'pt' ? 'Indicado para' : 'Recommended for'}
-              </h4>
-              <ul className="space-y-1.5 text-xs text-[#525E6A]">
-                {activeModalService.forWhom.map((item, i) => (
-                  <li key={i} className="flex items-center gap-2">
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#C9A227]" />
-                    <span>{item}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* Modal Bottom CTA */}
-            <div className="mt-8 pt-5 border-t border-[#F2ECE4] flex flex-col sm:flex-row items-center justify-between gap-3">
-              <span className="text-xs text-[#734F1B] italic">
-                {lang === 'pt'
-                  ? 'Sessões com 50 min. Atendimento presencial e online.'
-                  : '50-minute sessions. In-person & online available.'}
-              </span>
-              <a
-                href={buildWhatsAppLink(activeModalService.whatsappMessage)}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full text-xs sm:text-sm font-bold bg-[#25D366] hover:bg-[#20ba5a] text-white shadow-md transition-all"
-              >
-                <MessageCircle className="w-4 h-4 fill-white" />
-                <span>{lang === 'pt' ? 'Agendar esta consulta no WhatsApp' : 'Book this session on WhatsApp'}</span>
-              </a>
-            </div>
-          </div>
-        </div>
-      )}
     </section>
   );
 };

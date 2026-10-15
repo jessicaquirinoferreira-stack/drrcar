@@ -1,45 +1,94 @@
 @import "tailwindcss";
 
 @theme {
-  --font-serif: "Cormorant Garamond", Georgia, serif;
-  --font-sans: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-serif: "Playfair Display", "Cormorant Garamond", Georgia, serif;
+  --font-sans: "Inter", "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, sans-serif;
 
-  --color-wine-950: #3A0007;
-  --color-wine-900: #590009;
-  --color-wine-800: #73000A;
-  --color-wine-700: #8B0000;
-  --color-wine-600: #A52A2A;
-  --color-cream-50: #FAF8F5;
-  --color-cream-100: #F4EFE6;
-  --color-cream-200: #E8DFD1;
-  --color-copper-400: #D4AF37;
-  --color-copper-500: #C59B6D;
-  --color-copper-600: #A87C4F;
+  /* Burgundy / Vinho Real */
+  --color-burgundy-950: #420D14;
+  --color-burgundy-900: #5C121C;
+  --color-burgundy-800: #7A1F2B;
+  --color-burgundy-700: #8B1A2B;
+  --color-burgundy-600: #A82537;
+  --color-burgundy-500: #C2354A;
+  --color-burgundy-100: #F9EBEF;
+  --color-burgundy-50: #FDF5F6;
+
+  /* Prata & Platina Metálica */
+  --color-silver-900: #4A4D52;
+  --color-silver-800: #6B7280;
+  --color-silver-700: #9CA3AF;
+  --color-silver-600: #B8BCC4;
+  --color-silver-400: #D0D5DD;
+  --color-silver-300: #E5E7EB;
+  --color-silver-200: #EEF0F3;
+  --color-silver-100: #F3F4F6;
+  --color-silver-50: #F9FAFB;
+
+  /* Acentos de Luxo Dourado Suave */
+  --color-gold-champagne: #D4AF37;
+  --color-gold-muted: #C5A059;
+  --color-gold-light: #F4E9CD;
 }
 
 @layer base {
   html {
     scroll-behavior: smooth;
     font-family: var(--font-sans);
-    background-color: #FAF8F5;
-    color: #1C1617;
+    background-color: #FFFFFF;
+    color: #1A1A1A;
   }
 
-  h1, h2, h3, .font-display {
+  body {
+    background-color: #FFFFFF;
+    color: #1A1A1A;
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, h4, .font-serif {
     font-family: var(--font-serif);
-    text-wrap: balance;
+    letter-spacing: -0.01em;
   }
 }
 
-@keyframes floatSlow {
-  0%, 100% {
-    transform: translateY(0px);
-  }
-  50% {
-    transform: translateY(-6px);
-  }
+/* Efeito Prata Metálica & Degradê de Alto Padrão */
+.silver-shimmer-border {
+  border-image: linear-gradient(to right, #D0D5DD, #F3F4F6, #D0D5DD) 1;
 }
 
-.animate-float-slow {
-  animation: floatSlow 5s ease-in-out infinite;
+.silver-card {
+  background: linear-gradient(135deg, #FFFFFF 0%, #FAFAFA 50%, #F5F7FA 100%);
+  border: 1px solid rgba(208, 213, 221, 0.7);
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05), 0 1px 3px 0 rgba(0, 0, 0, 0.03);
+}
+
+.silver-card:hover {
+  border-color: rgba(122, 31, 43, 0.4);
+  box-shadow: 0 12px 32px -4px rgba(122, 31, 43, 0.08), 0 4px 12px 0 rgba(0, 0, 0, 0.04);
+}
+
+/* Linhas decorativas finas em vermelho e prata */
+.luxury-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, #D0D5DD 20%, #7A1F2B 50%, #D0D5DD 80%, transparent 100%);
+}
+
+.luxury-divider-silver {
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, #E5E7EB 25%, #CBD5E1 50%, #E5E7EB 75%, transparent 100%);
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 9px;
+}
+::-webkit-scrollbar-track {
+  background: #F3F4F6;
+}
+::-webkit-scrollbar-thumb {
+  background: #CBD5E1;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #7A1F2B;
 }

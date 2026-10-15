@@ -2,32 +2,30 @@ import React from 'react';
 import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
 import { AboutDoctor } from './components/AboutDoctor';
-import { ImplantsSection } from './components/ImplantsSection';
-import { ServicesSection } from './components/ServicesSection';
 import { SpecializedFrontsSection } from './components/SpecializedFrontsSection';
-import { FaqSection } from './components/FaqSection';
 import { WhyChooseSection } from './components/WhyChooseSection';
-import { TestimonialsSection } from './components/TestimonialsSection';
+import { FaqSection } from './components/FaqSection';
 import { ContactSection } from './components/ContactSection';
 import { Footer } from './components/Footer';
 import { FloatingElements } from './components/FloatingElements';
+import { ToothAssistant } from './components/ToothAssistant';
 
 export function App() {
   return (
-    <div className="min-h-screen flex flex-col bg-[#FAF8F5] text-[#1C1617]">
+    <div className="min-h-screen flex flex-col bg-white text-[#1A1A1A] selection:bg-[#7A1F2B] selection:text-white">
       <Navbar />
       <main className="flex-1">
         <Hero />
         <AboutDoctor />
-        <ImplantsSection />
-        <ServicesSection />
         <SpecializedFrontsSection />
-        <FaqSection />
         <WhyChooseSection />
-        <TestimonialsSection />
+        <FaqSection />
         <ContactSection />
       </main>
       <Footer />
+      {/* Dentinho Assistente Virtual no Canto Esquerdo */}
+      <ToothAssistant />
+      {/* Botão de WhatsApp e Voltar ao Topo no Canto Direito */}
       <FloatingElements />
     </div>
   );
